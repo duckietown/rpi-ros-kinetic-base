@@ -1,4 +1,4 @@
-FROM arm32v7/ros:kinetic-ros-base-xenial
+FROM ros:kinetic-ros-base-xenial
 
 # switch on systemd init system in container
 ENV INITSYSTEM off
@@ -10,8 +10,6 @@ ENV LC_ALL C.UTF-8
 ENV ROS_DISTRO kinetic
 
 COPY ./bin/ /usr/bin/
-
-RUN [ "cross-build-start" ]
 
 # install packages
 RUN apt-get update && apt-get install -q -y \
@@ -90,7 +88,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         python-pymongo \
     && rm -rf /var/lib/apt/lists/*
 
-RUN [ "cross-build-end" ]
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
@@ -98,4 +95,3 @@ COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
 
-LABEL maintainer="Breandan Considine breandan.considine@umontreal.ca"
